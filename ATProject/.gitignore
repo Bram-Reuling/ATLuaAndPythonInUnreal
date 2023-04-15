@@ -3,6 +3,7 @@
 
 # Rider files
 .idea/
+Plugins/Developer/RiderLink/*
 
 # Compiled Object files
 *.slo
