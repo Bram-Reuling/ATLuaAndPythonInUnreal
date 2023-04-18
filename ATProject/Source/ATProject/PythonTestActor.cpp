@@ -5,27 +5,29 @@
 #include "PythonTestActor.h"
 #include "PythonLibrary/Python.h"
 
+// PGS = Python Game Scripting
+
 // Python stuff
-static PyObject* emb_printunreal(PyObject *self, PyObject *args)
+static PyObject* PGSPrintUnreal(PyObject *self, PyObject *args)
 {
 	UE_LOG(LogTemp, Log, TEXT("Called from Python!"));
 
 	return nullptr;
 }
 
-static PyMethodDef EmbMethods[] = {
-	{"printunreal", emb_printunreal, METH_VARARGS, "Print a string in Unreal Engine."},
+static PyMethodDef PgsMethods[] = {
+	{"PrintUnreal", PGSPrintUnreal, METH_VARARGS, "Print a string in Unreal Engine."},
 	{nullptr, nullptr, 0, nullptr}
 };
 
-static PyModuleDef EmbModule = {
-	PyModuleDef_HEAD_INIT, "emb", nullptr, -1, EmbMethods,
+static PyModuleDef PgsModule = {
+	PyModuleDef_HEAD_INIT, "pgs", nullptr, -1, PgsMethods,
 	nullptr, nullptr, nullptr, nullptr
 };
 
-static PyObject* PyInit_emb(void)
+static PyObject* PyInit_pgs(void)
 {
-	return PyModule_Create(&EmbModule);
+	return PyModule_Create(&PgsModule);
 }
 
 // Sets default values
@@ -46,7 +48,7 @@ void APythonTestActor::BeginPlay()
 	FString RelativePath = FPaths::ProjectDir();
 
 	RelativePath.Append("Scripts/Python/script.py");
-
+	
 	UE_LOG(LogTemp, Log, TEXT("RelativePath: %s"), *RelativePath);
 
 	if (!FPaths::FileExists(RelativePath))
@@ -55,7 +57,7 @@ void APythonTestActor::BeginPlay()
 		return;
 	}
 
-	PyImport_AppendInittab("emb", &PyInit_emb);
+	PyImport_AppendInittab("pgs", &PyInit_pgs);
 	
 	Py_Initialize();
 
