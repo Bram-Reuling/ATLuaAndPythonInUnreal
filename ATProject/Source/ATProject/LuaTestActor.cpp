@@ -3,6 +3,16 @@
 
 #include "LuaTestActor.h"
 
+// Lua functions
+static int PrintUnreal(lua_State* L)
+{
+	const char* textFromLua = lua_tostring(L, 1);
+	
+	UE_LOG(LogTemp, Log, TEXT("Called from Lua! Text send: %hs"), textFromLua);
+
+	return 0;
+}
+
 // Sets default values
 ALuaTestActor::ALuaTestActor()
 {
@@ -18,24 +28,19 @@ void ALuaTestActor::BeginPlay()
 
 	const FString cmd = "a = 7 + 11";
 
+	FString RelativePath = FPaths::ProjectDir();
+
+	RelativePath.Append("Scripts/Lua/script.lua");
+	
+	const char* file = TCHAR_TO_ANSI(*RelativePath);
+
 	lua_State *L = luaL_newstate();
+	luaL_openlibs(L);
+	lua_register(L, "PrintUnreal", PrintUnreal);
+	luaL_dofile(L, file);
 
-	const char* scriptString = TCHAR_TO_ANSI(*cmd);
-	const int r = luaL_dostring(L, scriptString);
-
-	if (r == LUA_OK)
-	{
-		lua_getglobal(L, "a");
-		if (lua_isnumber(L, -1))
-		{
-			const float a_in_cpp = (float)lua_tonumber(L, -1);
-			UE_LOG(LogTemp, Log, TEXT("a_in_cpp = %f"), a_in_cpp);
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("ERROR"));
-	}
+	lua_getglobal(L, "PrintInUnrealThroughLua");
+	lua_pcall(L, 0, 0, 0);
 }
 
 // Called every frame
