@@ -65,8 +65,28 @@ void APythonTestActor::BeginPlay()
 	FILE* PScriptFile = fopen(file, "r");
 	if(PScriptFile)
 	{
-		PyRun_SimpleFile(PScriptFile, "script.py");
+		//PyRun_SimpleFile(PScriptFile, "script.py");
 		fclose(PScriptFile);
+	}
+
+	PyRun_SimpleString("import sys");
+	PyRun_SimpleString("sys.path.append('../../../../Projects/AT/ATProject/Scripts/Python/')");
+	PyRun_SimpleString("sys.argv = ['script.py']");
+
+	PyObject* pName = nullptr;
+	PyObject* pModule = nullptr;
+	PyObject* pFunc = nullptr;
+	pName = PyUnicode_FromString("script");
+	pModule = PyImport_Import(pName);
+	if (pModule == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("pModule == nullptr"));	
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("eyy"));	
+		pFunc = PyObject_GetAttrString(pModule, "PrintUnrealFromPython");
+		PyObject_CallObject(pFunc, nullptr);
 	}
 	
 	Py_Finalize();

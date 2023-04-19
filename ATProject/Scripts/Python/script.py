@@ -1,3 +1,4 @@
 import pgs
 
-pgs.PrintUnreal()
+def PrintUnrealFromPython():
+    pgs.PrintUnreal()
