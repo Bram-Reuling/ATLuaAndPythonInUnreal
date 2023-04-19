@@ -43,31 +43,7 @@ void APythonTestActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Log, TEXT("Running Python..."));
-
-	FString RelativePath = FPaths::ProjectDir();
-
-	RelativePath.Append("Scripts/Python/script.py");
-	
-	UE_LOG(LogTemp, Log, TEXT("RelativePath: %s"), *RelativePath);
-
-	if (!FPaths::FileExists(RelativePath))
-	{
-		UE_LOG(LogTemp, Error, TEXT("File does not exist!"));
-		return;
-	}
-
-	PyImport_AppendInittab("pgs", &PyInit_pgs);
-	
-	Py_Initialize();
-
-	const char* file = TCHAR_TO_ANSI(*RelativePath);
-	FILE* PScriptFile = fopen(file, "r");
-	if(PScriptFile)
-	{
-		//PyRun_SimpleFile(PScriptFile, "script.py");
-		fclose(PScriptFile);
-	}
+	InitializePython();
 
 	PyRun_SimpleString("import sys");
 	PyRun_SimpleString("sys.path.append('../../../../Projects/AT/ATProject/Scripts/Python/')");
@@ -89,6 +65,32 @@ void APythonTestActor::BeginPlay()
 		PyObject_CallObject(pFunc, nullptr);
 	}
 	
+	FString RelativePath = FPaths::ProjectDir();
+
+	RelativePath.Append("Scripts/Python/script.py");
+	
+	UE_LOG(LogTemp, Log, TEXT("RelativePath: %s"), *RelativePath);
+
+	if (!FPaths::FileExists(RelativePath))
+	{
+		UE_LOG(LogTemp, Error, TEXT("File does not exist!"));
+		return;
+	}
+
+	const char* file = TCHAR_TO_ANSI(*RelativePath);
+	FILE* PScriptFile = fopen(file, "r");
+	if(PScriptFile)
+	{
+		PyRun_SimpleFile(PScriptFile, "script.py");
+		fclose(PScriptFile);
+	}
+}
+
+void APythonTestActor::Destroyed()
+{
+	UE_LOG(LogTemp, Log, TEXT("APythonTestActor::Destroyed"));
+	Super::Destroyed();
+	
 	Py_Finalize();
 }
 
@@ -99,3 +101,15 @@ void APythonTestActor::Tick(float DeltaTime)
 
 }
 
+#pragma region Python Code
+
+void APythonTestActor::InitializePython()
+{
+	UE_LOG(LogTemp, Log, TEXT("APythonTestActor::InitializePythonModule"));
+
+	PyImport_AppendInittab("pgs", &PyInit_pgs);
+	
+	Py_Initialize();
+}
+
+#pragma endregion 

@@ -8,7 +8,7 @@ static int PrintUnreal(lua_State* L)
 {
 	const char* textFromLua = lua_tostring(L, 1);
 	
-	UE_LOG(LogTemp, Log, TEXT("Called from Lua! Text send: %hs"), textFromLua);
+	UE_LOG(LogTemp, Log, TEXT("[C++ && UNREAL] %hs"), textFromLua);
 
 	return 0;
 }
@@ -21,32 +21,46 @@ ALuaTestActor::ALuaTestActor()
 
 }
 
+ALuaTestActor::~ALuaTestActor()
+{
+	Lua_State = nullptr;
+}
+
 // Called when the game starts or when spawned
 void ALuaTestActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	const FString cmd = "a = 7 + 11";
+	// File setup.
+	ScriptFolderPath = FPaths::ProjectDir().Append("Scripts/Lua");
+	FullScriptPath = ScriptFolderPath.Append("/").Append(LuaScriptFileName);
+	FullFilePath = TCHAR_TO_ANSI(*FullScriptPath);
 
-	FString RelativePath = FPaths::ProjectDir();
+	// Start Lua.
+	Lua_State = luaL_newstate();
 
-	RelativePath.Append("Scripts/Lua/script.lua");
+	if (Lua_State == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Lua_State == nullptr"));
+		return;
+	}
 	
-	const char* file = TCHAR_TO_ANSI(*RelativePath);
+	luaL_openlibs(Lua_State);
 
-	lua_State *L = luaL_newstate();
-	luaL_openlibs(L);
-	lua_register(L, "PrintUnreal", PrintUnreal);
-	luaL_dofile(L, file);
+	// Register functions to Lua.
+	lua_register(Lua_State, "PrintUnreal", PrintUnreal);
+	luaL_dofile(Lua_State, FullFilePath);
 
-	lua_getglobal(L, "PrintInUnrealThroughLua");
-	lua_pcall(L, 0, 0, 0);
+	lua_getglobal(Lua_State, "BeginPlay");
+	lua_pcall(Lua_State, 0, 0 ,0);
 }
 
 // Called every frame
 void ALuaTestActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	lua_getglobal(Lua_State, "Tick");
+	lua_pushnumber(Lua_State, DeltaTime);
+	lua_pcall(Lua_State, 1, 0, 0);
 }
 

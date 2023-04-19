@@ -22,13 +22,24 @@ class ATPROJECT_API ALuaTestActor : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ALuaTestActor();
-
+	~ALuaTestActor();
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	lua_State* Lua_State = nullptr;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+private:
+
+	FString ScriptFolderPath;
+	FString FullScriptPath;
+	char* FullFilePath = nullptr;
+	
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	FString LuaScriptFileName = "script.lua";
 };
