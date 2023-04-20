@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "PythonLibrary/Python.h"
 #include "PythonTestActor.generated.h"
 
 UCLASS()
@@ -27,4 +28,22 @@ public:
 private:
 	void InitializePython();
 
+	FString ScriptFolderPath;
+	FString FullScriptPath;
+	char* FullFilePath = nullptr;
+	
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	FString PythonScriptFileName = "script";
+
+	PyObject* pModuleName = nullptr;
+	PyObject* pModule = nullptr;
+
+	TMap<FString, PyObject*> PythonFunctionObjects;
+
+	TArray<FString> PythonFunctions =
+	{
+		"PrintUnrealFromPython",
+		"BeginPlay",
+		"Tick"
+	};
 };

@@ -33,7 +33,8 @@ void ALuaTestActor::BeginPlay()
 
 	// File setup.
 	ScriptFolderPath = FPaths::ProjectDir().Append("Scripts/Lua");
-	FullScriptPath = ScriptFolderPath.Append("/").Append(LuaScriptFileName);
+	FullScriptPath = ScriptFolderPath;
+	FullScriptPath.Append("/").Append(LuaScriptFileName).Append(".lua");
 	FullFilePath = TCHAR_TO_ANSI(*FullScriptPath);
 
 	// Start Lua.

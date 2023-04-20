@@ -41,5 +41,5 @@ private:
 	char* FullFilePath = nullptr;
 	
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	FString LuaScriptFileName = "script.lua";
+	FString LuaScriptFileName = "script";
 };

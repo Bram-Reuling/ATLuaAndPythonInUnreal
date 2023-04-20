@@ -2,6 +2,7 @@
 
 -- Called when the game starts or when spawned
 function BeginPlay()
+    PrintUnreal('Test from BeginPlay')
 end
 
 -- Called every frame
