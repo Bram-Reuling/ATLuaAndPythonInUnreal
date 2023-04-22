@@ -32,7 +32,10 @@ protected:
 #pragma region Settings
 	
 	ETestType TestType = ETestType::Timer;
+
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess="true"))
 	FString TestDescriptor = "Base";
+	
 	int NumberOfActions = 0;
 
 #pragma endregion 

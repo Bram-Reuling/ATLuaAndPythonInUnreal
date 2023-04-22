@@ -56,8 +56,12 @@ void ATestManager::SampleRunDoneEvent()
 	
 	if (CurrentSampleRun == Samples)
 	{
-		CalculateAndDisplayAverage();
-		if (CurrentTestActorIndex + 1 == TestActors.Num()) return;
+		CalculateAverage();
+		if (CurrentTestActorIndex + 1 == TestActors.Num())
+		{
+			DisplayResults();
+			return;
+		}
 		CurrentTestActor->TestStartDelegate.Clear();
 		CurrentTestActor->TestDoneDelegate.Clear();
 		CurrentTestActor = nullptr;
@@ -74,7 +78,19 @@ void ATestManager::SampleRunDoneEvent()
 	RunSample();
 }
 
-void ATestManager::CalculateAndDisplayAverage()
+void ATestManager::CreateResult(float TotalTime, float TotalMemory, float TotalFPS)
+{
+	FResult Result;
+	Result.ActorIndex = CurrentTestActorIndex;
+	Result.TestDescriptor = CurrentTestActor->GetTestDescriptor();
+	Result.TimerResult = TotalTime;
+	Result.MemoryResult = TotalMemory;
+	Result.FPSResult = TotalFPS;
+
+	Results.Add(Result);
+}
+
+void ATestManager::CalculateAverage()
 {
 	float TotalTime = 0;
 	float TotalMemory = 0;
@@ -94,14 +110,11 @@ void ATestManager::CalculateAndDisplayAverage()
 	{
 		TotalFPS += FPS;
 	}
-
+	
 	if (TotalTime == 0 || TotalMemory == 0 || TotalFPS == 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("==================RESULT OF %s TEST=================="), *CurrentTestActor->GetTestDescriptor());
-		UE_LOG(LogTemp, Warning, TEXT("TotalTime: %f μs"), TotalTime);
-		UE_LOG(LogTemp, Warning, TEXT("TotalMemory: %f bytes"), TotalMemory);
-		UE_LOG(LogTemp, Warning, TEXT("TotalFPS: %f FPS"), TotalFPS);
-		UE_LOG(LogTemp, Warning, TEXT("======================================================="));
+		UE_LOG(LogTemp, Warning, TEXT("NO VALID TEST RESULTS"));
+		CreateResult(0,0,0);
 		return;	
 	}
 	
@@ -109,10 +122,18 @@ void ATestManager::CalculateAndDisplayAverage()
 	const float AverageMemoryResult = TotalMemory / Actions;
 	const float AverageFPSResult = TotalFPS / Actions;
 
-	UE_LOG(LogTemp, Warning, TEXT("==================RESULT OF %s TEST=================="), *CurrentTestActor->GetTestDescriptor());
-	UE_LOG(LogTemp, Warning, TEXT("AverageTimerResult: %f μs"), AverageTimerResult);
-	UE_LOG(LogTemp, Warning, TEXT("AverageMemoryResult: %f bytes"), AverageMemoryResult);
-	UE_LOG(LogTemp, Warning, TEXT("AverageFPSResult: %f FPS"), AverageFPSResult);
-	UE_LOG(LogTemp, Warning, TEXT("====================================================="));
+	CreateResult(AverageTimerResult, AverageMemoryResult, AverageFPSResult);
+}
+
+void ATestManager::DisplayResults()
+{
+	for(FResult Result : Results)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("==================RESULT OF %s TEST=================="), *Result.TestDescriptor);
+		UE_LOG(LogTemp, Warning, TEXT("AverageTimerResult: %f μs"), Result.TimerResult);
+		UE_LOG(LogTemp, Warning, TEXT("AverageMemoryResult: %f bytes"), Result.MemoryResult);
+		UE_LOG(LogTemp, Warning, TEXT("AverageFPSResult: %f FPS"), Result.FPSResult);
+		UE_LOG(LogTemp, Warning, TEXT("======================================================="));
+	}
 }
 

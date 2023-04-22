@@ -7,6 +7,27 @@
 #include "GameFramework/Actor.h"
 #include "TestManager.generated.h"
 
+USTRUCT()
+struct FResult
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	int ActorIndex = 0;
+
+	UPROPERTY()
+	FString TestDescriptor = "";
+	
+	UPROPERTY()
+	float TimerResult = 0;
+
+	UPROPERTY()
+	float MemoryResult = 0;
+	
+	UPROPERTY()
+	float FPSResult = 0;
+};
+
 UCLASS()
 class ATPROJECT_API ATestManager : public AActor
 {
@@ -42,6 +63,8 @@ private:
 	TArray<SIZE_T> CurrentTestMemoryResults = {};
 	TArray<float> CurrentTestFPSResults = {};
 
+	TArray<FResult> Results = {};
+
 	void RunSample();
 	
 	UFUNCTION()
@@ -49,5 +72,7 @@ private:
 
 	UFUNCTION()
 	void SampleRunDoneEvent();
-	void CalculateAndDisplayAverage();
+	void CreateResult(float TotalTime, float TotalMemory, float TotalFPS);
+	void CalculateAverage();
+	void DisplayResults();
 };
