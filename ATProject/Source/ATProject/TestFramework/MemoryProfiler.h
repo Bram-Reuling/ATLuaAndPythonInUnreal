@@ -10,17 +10,14 @@
 /**
  * 
  */
-class ATPROJECT_API MemoryProfiler
+class MemoryProfiler
 {
 public:
-	MemoryProfiler();
-	~MemoryProfiler();
-
-	void Start();
-	void End();
+	bool Start();
+	bool End();
 	SIZE_T GetMemoryUsage() const;
 
 private:
-	PROCESS_MEMORY_COUNTERS StartMemoryInfo;
-	PROCESS_MEMORY_COUNTERS EndMemoryInfo;
+	PROCESS_MEMORY_COUNTERS StartMemoryInfo = {};
+	PROCESS_MEMORY_COUNTERS EndMemoryInfo = {};
 };

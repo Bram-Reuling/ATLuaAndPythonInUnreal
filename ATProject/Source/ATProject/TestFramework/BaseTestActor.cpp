@@ -3,9 +3,6 @@
 
 #include "BaseTestActor.h"
 
-#include "MemoryProfiler.h"
-#include "TimerProfiler.h"
-
 // Sets default values
 ABaseTestActor::ABaseTestActor()
 {
@@ -13,45 +10,40 @@ ABaseTestActor::ABaseTestActor()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-void ABaseTestActor::BeginPlay()
+void ABaseTestActor::SetupTestEnvironment()
 {
-	PerformTest();
-	Super::BeginPlay();
+	TestStartDelegate.Broadcast();
 }
 
-void ABaseTestActor::SetupTestEnvironment() {}
-
-void ABaseTestActor::BreakdownTestEnvironment() {}
-
-void ABaseTestActor::PerformTest()
+void ABaseTestActor::BreakdownTestEnvironment()
 {
-	int value = 0;
-
-	UE_LOG(LogTemp, Warning, TEXT("Starting timer test."));
-	
-	TimerProfiler Timer;
-	Timer.Start();
-	for (int i = 0; i < 1000000; i++)
-		value += 2;
-	UE_LOG(LogTemp, Warning, TEXT("Result: %d"), value);
-	Timer.Stop();
-	
-	UE_LOG(LogTemp, Warning, TEXT("Code execution: %lld μs"), Timer.GetDuration());
-
-	value = 0;
-
-	UE_LOG(LogTemp, Warning, TEXT("Starting mem test."));
-
-	MemoryProfiler MemoryProfiler;
-	MemoryProfiler.Start();
-	for (int i = 0; i < 1000000; i++)
-		value += 2;
-
-	TimerProfiler *NewTimer = new TimerProfiler();
-	
-	UE_LOG(LogTemp, Warning, TEXT("Result: %d"), value);
-	MemoryProfiler.End();
-
-	UE_LOG(LogTemp, Warning, TEXT("Code execution: %llu bytes"), MemoryProfiler.GetMemoryUsage());
+	TestDoneDelegate.Broadcast();
 }
+
+void ABaseTestActor::SetTestType(ETestType Type)
+{
+	TestType = Type;
+}
+
+ETestType ABaseTestActor::GetTestType() const
+{
+	return TestType;
+}
+
+TArray<long long> ABaseTestActor::GetTimerResults() const
+{
+	return TimerResults;
+}
+
+TArray<SIZE_T> ABaseTestActor::GetMemoryResults() const
+{
+	return MemoryResults;
+}
+
+TArray<float> ABaseTestActor::GetFPSResults() const
+{
+	return FPSResults;
+}
+
+void ABaseTestActor::PerformTest(int NumberOfAction) {}
 

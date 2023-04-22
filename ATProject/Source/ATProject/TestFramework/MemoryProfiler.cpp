@@ -3,22 +3,26 @@
 
 #include "MemoryProfiler.h"
 
-MemoryProfiler::MemoryProfiler(): StartMemoryInfo(), EndMemoryInfo()
-{
-}
-
-MemoryProfiler::~MemoryProfiler() {}
-
-void MemoryProfiler::Start()
+bool MemoryProfiler::Start()
 {
 	const HANDLE CurrentProcess = GetCurrentProcess();
-	GetProcessMemoryInfo(CurrentProcess, &StartMemoryInfo, sizeof(StartMemoryInfo));
+	if(!GetProcessMemoryInfo(CurrentProcess, &StartMemoryInfo, sizeof(StartMemoryInfo)))
+	{
+		return false;
+	}
+
+	return true;
 }
 
-void MemoryProfiler::End()
+bool MemoryProfiler::End()
 {
 	const HANDLE CurrentProcess = GetCurrentProcess();
-	GetProcessMemoryInfo(CurrentProcess, &EndMemoryInfo, sizeof(EndMemoryInfo));
+	if(!GetProcessMemoryInfo(CurrentProcess, &EndMemoryInfo, sizeof(EndMemoryInfo)))
+	{
+		return false;
+	}
+
+	return true;
 }
 
 SIZE_T MemoryProfiler::GetMemoryUsage() const
