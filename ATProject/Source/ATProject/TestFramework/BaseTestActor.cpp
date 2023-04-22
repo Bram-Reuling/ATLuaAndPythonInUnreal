@@ -33,9 +33,9 @@ void ABaseTestActor::CalculateAverages()
 
 	if (TotalTime == 0 || TotalMemory == 0 || TotalFPS == 0) return;
 	
-	AverageTimerResult = TotalTime / NumberOfActions;
-	AverageMemoryResult = TotalMemory / NumberOfActions;
-	AverageFPSResult = TotalFPS / NumberOfActions;
+	AverageTimerResult = TotalTime / TotalNumberOfActions;
+	AverageMemoryResult = TotalMemory / TotalNumberOfActions;
+	AverageFPSResult = TotalFPS / TotalNumberOfActions;
 }
 
 void ABaseTestActor::SetupTestEnvironment()
@@ -78,8 +78,16 @@ FString ABaseTestActor::GetTestDescriptor() const
 	return TestDescriptor;
 }
 
-void ABaseTestActor::PerformTest(int NumberOfAction)
+void ABaseTestActor::PerformTest(int NumberOfActions)
 {
-	NumberOfActions = NumberOfAction;
+	TotalNumberOfActions = NumberOfActions;
+
+	SetupTestEnvironment();
+
+	Test(TotalNumberOfActions);
+	
+	BreakdownTestEnvironment();
 }
+
+void ABaseTestActor::Test(int NumberOfActions) {}
 

@@ -36,7 +36,7 @@ protected:
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess="true"))
 	FString TestDescriptor = "Base";
 	
-	int NumberOfActions = 0;
+	int TotalNumberOfActions = 0;
 
 #pragma endregion 
 
@@ -78,8 +78,9 @@ public:
 
 #pragma region TestFunctions
 	
-	// Actual test logic goes in here.
-	virtual void PerformTest(int NumberOfAction);
+	void PerformTest(int NumberOfActions);
+
+	virtual void Test(int NumberOfActions);
 
 	void CalculateAverages();
 
