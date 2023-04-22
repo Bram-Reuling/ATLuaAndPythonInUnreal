@@ -14,7 +14,7 @@ class MemoryProfiler
 {
 public:
 	bool Start();
-	bool End();
+	bool Stop();
 	SIZE_T GetMemoryUsage() const;
 
 private:

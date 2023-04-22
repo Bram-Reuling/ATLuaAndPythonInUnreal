@@ -52,7 +52,7 @@ void ATestManager::SampleRunDoneEvent()
 	
 	CurrentTestTimerResults.Add(CurrentTestActor->GetAverageTimerResult());
 	CurrentTestMemoryResults.Add(CurrentTestActor->GetAverageMemoryResult());
-	CurrentTestFPSResults.Add(CurrentTestActor->GetAverageFPSResult());
+	//CurrentTestFPSResults.Add(CurrentTestActor->GetAverageFPSResult());
 	
 	if (CurrentSampleRun == Samples)
 	{
@@ -108,21 +108,24 @@ void ATestManager::CalculateAverage()
 
 	for (const float FPS : CurrentTestFPSResults)
 	{
-		TotalFPS += FPS;
+		//TotalFPS += FPS;
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Total Time: %f"), TotalTime);
+	UE_LOG(LogTemp, Warning, TEXT("Total Memory: %f"), TotalMemory);
 	
-	if (TotalTime == 0 || TotalMemory == 0 || TotalFPS == 0)
+	if (TotalTime == 0 || TotalMemory == 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("NO VALID TEST RESULTS"));
 		CreateResult(0,0,0);
 		return;	
 	}
 	
-	const float AverageTimerResult = TotalTime / Actions;
-	const float AverageMemoryResult = TotalMemory / Actions;
-	const float AverageFPSResult = TotalFPS / Actions;
+	const float AverageTimerResult = TotalTime / CurrentTestTimerResults.Num();
+	const float AverageMemoryResult = TotalMemory / CurrentTestMemoryResults.Num();
+	//const float AverageFPSResult = TotalFPS / Actions;
 
-	CreateResult(AverageTimerResult, AverageMemoryResult, AverageFPSResult);
+	CreateResult(AverageTimerResult, AverageMemoryResult, 0);
 }
 
 void ATestManager::DisplayResults()

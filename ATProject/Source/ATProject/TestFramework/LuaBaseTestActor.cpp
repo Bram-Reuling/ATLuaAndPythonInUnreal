@@ -24,6 +24,7 @@ void ALuaBaseTestActor::SetupTestEnvironment()
 
 void ALuaBaseTestActor::BreakdownTestEnvironment()
 {
+	lua_close(Lua_State);
 	Lua_State = nullptr;
 	
 	Super::BreakdownTestEnvironment();

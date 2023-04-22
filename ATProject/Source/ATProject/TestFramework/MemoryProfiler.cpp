@@ -14,7 +14,7 @@ bool MemoryProfiler::Start()
 	return true;
 }
 
-bool MemoryProfiler::End()
+bool MemoryProfiler::Stop()
 {
 	const HANDLE CurrentProcess = GetCurrentProcess();
 	if(!GetProcessMemoryInfo(CurrentProcess, &EndMemoryInfo, sizeof(EndMemoryInfo)))
