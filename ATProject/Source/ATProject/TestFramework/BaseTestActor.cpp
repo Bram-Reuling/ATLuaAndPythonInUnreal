@@ -10,6 +10,34 @@ ABaseTestActor::ABaseTestActor()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
+void ABaseTestActor::CalculateAverages()
+{
+	long long TotalTime = 0;
+	SIZE_T TotalMemory = 0;
+	float TotalFPS = 0;
+
+	for (const long long Time : TimerResults)
+	{
+		TotalTime += Time;
+	}
+
+	for (const SIZE_T Memory : MemoryResults)
+	{
+		TotalMemory += Memory;
+	}
+
+	for (const float FPS : FPSResults)
+	{
+		TotalFPS += FPS;
+	}
+
+	if (TotalTime == 0 || TotalMemory == 0 || TotalFPS == 0) return;
+	
+	AverageTimerResult = TotalTime / NumberOfActions;
+	AverageMemoryResult = TotalMemory / NumberOfActions;
+	AverageFPSResult = TotalFPS / NumberOfActions;
+}
+
 void ABaseTestActor::SetupTestEnvironment()
 {
 	TestStartDelegate.Broadcast();
@@ -30,20 +58,28 @@ ETestType ABaseTestActor::GetTestType() const
 	return TestType;
 }
 
-TArray<long long> ABaseTestActor::GetTimerResults() const
+long long ABaseTestActor::GetAverageTimerResult() const
 {
-	return TimerResults;
+	return AverageTimerResult;
 }
 
-TArray<SIZE_T> ABaseTestActor::GetMemoryResults() const
+SIZE_T ABaseTestActor::GetAverageMemoryResult() const
 {
-	return MemoryResults;
+	return AverageMemoryResult;
 }
 
-TArray<float> ABaseTestActor::GetFPSResults() const
+float ABaseTestActor::GetAverageFPSResult() const
 {
-	return FPSResults;
+	return AverageFPSResult;
 }
 
-void ABaseTestActor::PerformTest(int NumberOfAction) {}
+FString ABaseTestActor::GetTestDescriptor() const
+{
+	return TestDescriptor;
+}
+
+void ABaseTestActor::PerformTest(int NumberOfAction)
+{
+	NumberOfActions = NumberOfAction;
+}
 

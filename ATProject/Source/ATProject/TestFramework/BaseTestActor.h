@@ -32,6 +32,8 @@ protected:
 #pragma region Settings
 	
 	ETestType TestType = ETestType::Timer;
+	FString TestDescriptor = "Base";
+	int NumberOfActions = 0;
 
 #pragma endregion 
 
@@ -40,6 +42,10 @@ protected:
 	TArray<long long> TimerResults = {};
 	TArray<SIZE_T> MemoryResults = {};
 	TArray<float> FPSResults = {};
+
+	long long AverageTimerResult = 0;
+	SIZE_T AverageMemoryResult = 0;
+	float AverageFPSResult = 0;
 
 #pragma endregion 
 
@@ -59,9 +65,11 @@ public:
 	void SetTestType(ETestType Type);
 	ETestType GetTestType() const;
 
-	TArray<long long> GetTimerResults() const;
-	TArray<SIZE_T> GetMemoryResults() const;
-	TArray<float> GetFPSResults() const;
+	long long GetAverageTimerResult() const;
+	SIZE_T GetAverageMemoryResult() const;
+	float GetAverageFPSResult() const;
+
+	FString GetTestDescriptor() const;
 
 #pragma endregion 
 
@@ -70,13 +78,17 @@ public:
 	// Actual test logic goes in here.
 	virtual void PerformTest(int NumberOfAction);
 
+	void CalculateAverages();
+
 #pragma endregion 
 
 #pragma region Delegates
 	
 	// Delegate for letting test manager know when the test starts.
+	UPROPERTY()
 	FTestCaseStart TestStartDelegate;
 
+	UPROPERTY()
 	// Delegate for letting test manager know when the test is done.
 	FTestCaseDone TestDoneDelegate;
 
