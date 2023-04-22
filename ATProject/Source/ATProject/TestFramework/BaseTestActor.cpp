@@ -12,11 +12,11 @@ ABaseTestActor::ABaseTestActor()
 
 void ABaseTestActor::CalculateAverages()
 {
-	long long TotalTime = 0;
+	float TotalTime = 0;
 	SIZE_T TotalMemory = 0;
 	float TotalFPS = 0;
 
-	for (const long long Time : TimerResults)
+	for (const float Time : TimerResults)
 	{
 		TotalTime += Time;
 	}
@@ -58,7 +58,7 @@ ETestType ABaseTestActor::GetTestType() const
 	return TestType;
 }
 
-long long ABaseTestActor::GetAverageTimerResult() const
+float ABaseTestActor::GetAverageTimerResult() const
 {
 	return AverageTimerResult;
 }

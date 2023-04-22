@@ -42,7 +42,7 @@ protected:
 
 #pragma region Results
 	
-	TArray<long long> TimerResults = {};
+	TArray<float> TimerResults = {};
 	TArray<SIZE_T> MemoryResults = {};
 	TArray<float> FPSResults = {};
 
@@ -68,7 +68,7 @@ public:
 	void SetTestType(ETestType Type);
 	ETestType GetTestType() const;
 
-	long long GetAverageTimerResult() const;
+	float GetAverageTimerResult() const;
 	SIZE_T GetAverageMemoryResult() const;
 	float GetAverageFPSResult() const;
 

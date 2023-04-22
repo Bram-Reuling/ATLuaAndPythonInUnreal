@@ -22,9 +22,9 @@ public:
 	void Stop();
 
 	// Gets the duration of the timer in microseconds (μs).
-	long long GetDuration() const;
+	float GetDuration() const;
 
 private:
 	std::chrono::time_point<std::chrono::high_resolution_clock> StartTimePoint;
-	long long Duration;
+	float Duration;
 };

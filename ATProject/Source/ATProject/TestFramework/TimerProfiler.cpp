@@ -24,7 +24,7 @@ void TimerProfiler::Stop()
 	Duration = End - Start;
 }
 
-long long TimerProfiler::GetDuration() const
+float TimerProfiler::GetDuration() const
 {
 	return Duration;
 }

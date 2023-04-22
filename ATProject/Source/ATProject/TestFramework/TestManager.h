@@ -59,7 +59,7 @@ private:
 	UPROPERTY()
 	ABaseTestActor* CurrentTestActor = nullptr;
 
-	TArray<long long> CurrentTestTimerResults = {};
+	TArray<float> CurrentTestTimerResults = {};
 	TArray<SIZE_T> CurrentTestMemoryResults = {};
 	TArray<float> CurrentTestFPSResults = {};
 

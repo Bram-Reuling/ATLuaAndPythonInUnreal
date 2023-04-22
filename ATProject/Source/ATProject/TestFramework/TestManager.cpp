@@ -96,7 +96,7 @@ void ATestManager::CalculateAverage()
 	float TotalMemory = 0;
 	float TotalFPS = 0;
 
-	for (const long long Time : CurrentTestTimerResults)
+	for (const float Time : CurrentTestTimerResults)
 	{
 		TotalTime += Time;
 	}
