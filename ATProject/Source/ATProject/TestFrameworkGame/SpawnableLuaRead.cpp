@@ -53,6 +53,4 @@ void ASpawnableLuaRead::DoTick(float DeltaTime)
 	{
 		float a = (float)lua_tonumber(Lua_State, -1);
 	}
-	
-	Super::DoTick(DeltaTime);
 }
