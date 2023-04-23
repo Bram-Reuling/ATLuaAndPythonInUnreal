@@ -32,6 +32,12 @@ struct FGameTestResult
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float LowFPS = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float HighTime = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float LowTime = 0;
 };
 
 UCLASS()

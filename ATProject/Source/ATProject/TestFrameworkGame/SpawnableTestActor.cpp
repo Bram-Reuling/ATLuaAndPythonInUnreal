@@ -51,6 +51,7 @@ void ASpawnableTestActor::Tick(float DeltaTime)
 		const float FPS = 1.0f/DeltaTime;
 		FPSResults.Add(FPS);
 		CheckFPS(FPS);
+		CheckTime(TimerProfiler.GetDuration());
 		TimerResults.Add(TimerProfiler.GetDuration());
 		CurrentAmountOfActions++;
 	}
@@ -58,7 +59,7 @@ void ASpawnableTestActor::Tick(float DeltaTime)
 	{
 		CalculateAverages();
 		BreakdownTestEnvironment();
-		TestDoneDelegate.Broadcast(AverageTimerResult, AverageFPSResult, HighestFPSMeasured, LowestFPSMeasured);
+		TestDoneDelegate.Broadcast(AverageTimerResult, AverageFPSResult, HighestFPSMeasured, LowestFPSMeasured, HighestTimeMeasured, LowestTimeMeasured);
 	}
 	
 }
@@ -100,5 +101,14 @@ void ASpawnableTestActor::CheckFPS(const float FPS)
 
 	if (LowestFPSMeasured == 0 || FPS < LowestFPSMeasured)
 		LowestFPSMeasured = FPS;
+}
+
+void ASpawnableTestActor::CheckTime(const float Time)
+{
+	if (Time > HighestTimeMeasured)
+		HighestTimeMeasured = Time;
+
+	if (LowestTimeMeasured == 0 || Time < LowestTimeMeasured)
+		LowestTimeMeasured = Time;
 }
 

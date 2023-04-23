@@ -7,7 +7,7 @@
 #include "SpawnableTestActor.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameTestCaseStart);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FGameTestCaseDone, float, ResultOfTimer, float, ResultOfFPS, float, FPSHigh, float, FPSLow);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FGameTestCaseDone, float, ResultOfTimer, float, ResultOfFPS, float, FPSHigh, float, FPSLow, float, TimeHigh, float, TimeLow);
 
 UCLASS()
 class ATPROJECT_API ASpawnableTestActor : public AActor
@@ -43,9 +43,13 @@ protected:
 	float HighestFPSMeasured = 0;
 	float LowestFPSMeasured = 0;
 
+	float HighestTimeMeasured = 0;
+	float LowestTimeMeasured = 0;
+
 	void CalculateAverages();
 
 	void CheckFPS(const float FPS);
+	void CheckTime(const float Time);
 
 public:	
 	// Called every frame
