@@ -71,5 +71,4 @@ void ASpawnablePythonAdd::DoTick(float DeltaTime)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Cant add"));
 	}
-	
 }
