@@ -1,0 +1,3 @@
+function Tick()
+    MoveActor()
+end
