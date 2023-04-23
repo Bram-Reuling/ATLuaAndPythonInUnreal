@@ -3,6 +3,8 @@
 
 #include "SpawnableTestActor.h"
 
+#include "ATProject/TestFramework/TimerProfiler.h"
+
 // Sets default values
 ASpawnableTestActor::ASpawnableTestActor()
 {
@@ -15,6 +17,7 @@ ASpawnableTestActor::ASpawnableTestActor()
 void ASpawnableTestActor::BeginPlay()
 {
 	Super::BeginPlay();
+	SetupTestEnvironment();
 	TestStartDelegate.Broadcast();
 }
 
@@ -23,22 +26,39 @@ void ASpawnableTestActor::Destroyed()
 	Super::Destroyed();
 }
 
+void ASpawnableTestActor::SetupTestEnvironment()
+{
+}
+
+void ASpawnableTestActor::BreakdownTestEnvironment()
+{
+}
+
 // Called every frame
 void ASpawnableTestActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	UE_LOG(LogTemp, Warning, TEXT("RUN: %d"), CurrentAmountOfActions);
+	UE_LOG(LogTemp, Warning, TEXT("[%s]RUN: %d"), *TestDescriptor, CurrentAmountOfActions);
 	
 	if (CurrentAmountOfActions < AmountOfActions)
 	{
+		TimerProfiler TimerProfiler;
+		TimerProfiler.Start();
 		DoTick(DeltaTime);
+		TimerProfiler.Stop();
+
+		const float FPS = 1.0f/DeltaTime;
+		FPSResults.Add(FPS);
+		CheckFPS(FPS);
+		TimerResults.Add(TimerProfiler.GetDuration());
 		CurrentAmountOfActions++;
 	}
 	else
 	{
 		CalculateAverages();
-		TestDoneDelegate.Broadcast(AverageTimerResult, AverageFPSResult);
+		BreakdownTestEnvironment();
+		TestDoneDelegate.Broadcast(AverageTimerResult, AverageFPSResult, HighestFPSMeasured, LowestFPSMeasured);
 	}
 	
 }
@@ -71,5 +91,14 @@ void ASpawnableTestActor::CalculateAverages()
 	{
 		AverageFPSResult = TotalFPS / FPSResults.Num();
 	}
+}
+
+void ASpawnableTestActor::CheckFPS(const float FPS)
+{
+	if (FPS > HighestFPSMeasured)
+		HighestFPSMeasured = FPS;
+
+	if (LowestFPSMeasured == 0 || FPS < LowestFPSMeasured)
+		LowestFPSMeasured = FPS;
 }
 

@@ -26,6 +26,12 @@ struct FGameTestResult
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float FPSResult = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float HighFPS = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float LowFPS = 0;
 };
 
 UCLASS()

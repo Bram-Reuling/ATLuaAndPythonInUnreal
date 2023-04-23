@@ -7,7 +7,7 @@
 #include "SpawnableTestActor.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGameTestCaseStart);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FGameTestCaseDone, float, ResultOfTimer, float, ResultOfFPS);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FGameTestCaseDone, float, ResultOfTimer, float, ResultOfFPS, float, FPSHigh, float, FPSLow);
 
 UCLASS()
 class ATPROJECT_API ASpawnableTestActor : public AActor
@@ -23,6 +23,9 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
 
+	virtual void SetupTestEnvironment();
+	virtual void BreakdownTestEnvironment();
+
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess="true"))
 	FString TestDescriptor = "Base";
 
@@ -37,7 +40,12 @@ protected:
 	float AverageTimerResult = 0;
 	float AverageFPSResult = 0;
 
+	float HighestFPSMeasured = 0;
+	float LowestFPSMeasured = 0;
+
 	void CalculateAverages();
+
+	void CheckFPS(const float FPS);
 
 public:	
 	// Called every frame
