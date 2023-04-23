@@ -26,29 +26,29 @@ void ALuaWriteTestActor::Test(int NumberOfActions)
 		}
 	}
 
-	// Memory Test
-	{
-		for (int index = 0; index < NumberOfActions; index++)
-		{
-			MemoryProfiler MemoryProfiler;
-			MemoryProfiler.Start();
-			WriteVariableToLua();
-
-			MemoryProfiler.Stop();
-
-			//UE_LOG(LogTemp, Warning, TEXT("Memory: %lld bytes"), MemoryProfiler.GetMemoryUsage());
-
-			MemoryResults.Add(MemoryProfiler.GetMemoryUsage());
-		}
-	}
-	
-	// FPS Test
-	{
-		for (int index = 0; index < NumberOfActions; index++)
-		{
-			WriteVariableToLua();
-		}
-	}
+	// // Memory Test
+	// {
+	// 	for (int index = 0; index < NumberOfActions; index++)
+	// 	{
+	// 		MemoryProfiler MemoryProfiler;
+	// 		MemoryProfiler.Start();
+	// 		WriteVariableToLua();
+	//
+	// 		MemoryProfiler.Stop();
+	//
+	// 		//UE_LOG(LogTemp, Warning, TEXT("Memory: %lld bytes"), MemoryProfiler.GetMemoryUsage());
+	//
+	// 		MemoryResults.Add(MemoryProfiler.GetMemoryUsage());
+	// 	}
+	// }
+	//
+	// // FPS Test
+	// {
+	// 	for (int index = 0; index < NumberOfActions; index++)
+	// 	{
+	// 		WriteVariableToLua();
+	// 	}
+	// }
 }
 
 void ALuaWriteTestActor::WriteVariableToLua()

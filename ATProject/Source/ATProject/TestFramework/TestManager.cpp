@@ -103,7 +103,7 @@ void ATestManager::CalculateAverage()
 
 	for (const SIZE_T Memory : CurrentTestMemoryResults)
 	{
-		TotalMemory += Memory;
+		//TotalMemory += Memory;
 	}
 
 	for (const float FPS : CurrentTestFPSResults)
@@ -114,7 +114,7 @@ void ATestManager::CalculateAverage()
 	UE_LOG(LogTemp, Warning, TEXT("Total Time: %f"), TotalTime);
 	UE_LOG(LogTemp, Warning, TEXT("Total Memory: %f"), TotalMemory);
 	
-	if (TotalTime == 0 || TotalMemory == 0)
+	if (TotalTime == 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("NO VALID TEST RESULTS"));
 		CreateResult(0,0,0);
@@ -122,10 +122,10 @@ void ATestManager::CalculateAverage()
 	}
 	
 	const float AverageTimerResult = TotalTime / CurrentTestTimerResults.Num();
-	const float AverageMemoryResult = TotalMemory / CurrentTestMemoryResults.Num();
+	//const float AverageMemoryResult = TotalMemory / CurrentTestMemoryResults.Num();
 	//const float AverageFPSResult = TotalFPS / Actions;
 
-	CreateResult(AverageTimerResult / 1000, AverageMemoryResult, 0);
+	CreateResult(AverageTimerResult / 1000, 0, 0);
 }
 
 void ATestManager::DisplayResults()

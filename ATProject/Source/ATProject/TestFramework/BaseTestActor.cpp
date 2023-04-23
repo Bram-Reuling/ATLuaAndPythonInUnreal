@@ -23,7 +23,7 @@ void ABaseTestActor::CalculateAverages()
 
 	for (const SIZE_T Memory : MemoryResults)
 	{
-		TotalMemory += Memory;
+		//TotalMemory += Memory;
 	}
 
 	for (const float FPS : FPSResults)
@@ -31,10 +31,10 @@ void ABaseTestActor::CalculateAverages()
 		//TotalFPS += FPS;
 	}
 
-	if (TotalTime == 0 || TotalMemory == 0) return;
+	if (TotalTime == 0) return;
 	
 	AverageTimerResult = TotalTime / TimerResults.Num();
-	AverageMemoryResult = TotalMemory / MemoryResults.Num();
+	//AverageMemoryResult = TotalMemory / MemoryResults.Num();
 	//AverageFPSResult = TotalFPS / TotalNumberOfActions;
 }
 

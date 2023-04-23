@@ -32,21 +32,21 @@ void APythonWriteTestActor::Test(int NumberOfActions)
 		}
 	}
 
-	{
-		for (int index = 0; index < NumberOfActions; index++)
-		{
-			MemoryProfiler MemoryProfiler;
-			MemoryProfiler.Start();
-
-			const char* pythonScript = "a = b\n";
-			PyDict_SetItemString(localDictionary, "b", PyFloat_FromDouble(1));
-			PyRun_String(pythonScript, Py_file_input, globalDictionary, localDictionary);
-			
-			MemoryProfiler.Stop();
-
-			MemoryResults.Add(MemoryProfiler.GetMemoryUsage());
-		}
-	}
+	// {
+	// 	for (int index = 0; index < NumberOfActions; index++)
+	// 	{
+	// 		MemoryProfiler MemoryProfiler;
+	// 		MemoryProfiler.Start();
+	//
+	// 		const char* pythonScript = "a = b\n";
+	// 		PyDict_SetItemString(localDictionary, "b", PyFloat_FromDouble(1));
+	// 		PyRun_String(pythonScript, Py_file_input, globalDictionary, localDictionary);
+	// 		
+	// 		MemoryProfiler.Stop();
+	//
+	// 		MemoryResults.Add(MemoryProfiler.GetMemoryUsage());
+	// 	}
+	// }
 }
 
 void APythonWriteTestActor::WriteVariableToPython()
