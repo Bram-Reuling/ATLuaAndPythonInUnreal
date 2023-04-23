@@ -14,9 +14,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTestCaseDone);
 UENUM(BlueprintType)
 enum ETestType
 {
-	Timer,
-	Memory,
-	FPS
+	Tick,
+	Managed
 };
 
 UCLASS()
@@ -31,7 +30,8 @@ public:
 protected:
 #pragma region Settings
 	
-	ETestType TestType = ETestType::Timer;
+	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess="true"))
+	TEnumAsByte<ETestType> TestType = ETestType::Managed;
 
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess="true"))
 	FString TestDescriptor = "Base";

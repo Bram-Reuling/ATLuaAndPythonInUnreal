@@ -27,13 +27,15 @@ void ATestManager::RunSample()
 		ABaseTestActor* TestActor = Cast<ABaseTestActor>(TestActors[CurrentTestActorIndex]);
 		if (!TestActor) return;
 
+		if (TestActor->GetTestType() == ETestType::Tick) return;
+		
 		CurrentTestActor = TestActor;
 
 		CurrentTestActor->TestStartDelegate.AddUniqueDynamic(this, &ATestManager::SampleRunStartEvent);
 		CurrentTestActor->TestDoneDelegate.AddUniqueDynamic(this, &ATestManager::SampleRunDoneEvent);
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("TestActor found!"))
+	//UE_LOG(LogTemp, Warning, TEXT("TestActor found!"))
 
 	CurrentTestActor->PerformTest(Actions);
 }
@@ -80,7 +82,7 @@ void ATestManager::SampleRunDoneEvent()
 
 void ATestManager::CreateResult(float TotalTime, float TotalMemory, float TotalFPS)
 {
-	FResult Result;
+	FGameTestResult Result;
 	Result.ActorIndex = CurrentTestActorIndex;
 	Result.TestDescriptor = CurrentTestActor->GetTestDescriptor();
 	Result.TimerResult = TotalTime;
@@ -130,7 +132,7 @@ void ATestManager::CalculateAverage()
 
 void ATestManager::DisplayResults()
 {
-	for(FResult Result : Results)
+	for(FGameTestResult Result : Results)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("==================RESULT OF %s TEST=================="), *Result.TestDescriptor);
 		UE_LOG(LogTemp, Warning, TEXT("AverageTimerResult: %f μs"), Result.TimerResult);

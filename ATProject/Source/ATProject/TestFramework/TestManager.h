@@ -7,24 +7,24 @@
 #include "GameFramework/Actor.h"
 #include "TestManager.generated.h"
 
-USTRUCT()
-struct FResult
+USTRUCT(BlueprintType)
+struct FGameTestResult
 {
 	GENERATED_BODY()
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int ActorIndex = 0;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString TestDescriptor = "";
 	
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float TimerResult = 0;
 
 	UPROPERTY()
 	float MemoryResult = 0;
 	
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float FPSResult = 0;
 };
 
@@ -63,7 +63,7 @@ private:
 	TArray<SIZE_T> CurrentTestMemoryResults = {};
 	TArray<float> CurrentTestFPSResults = {};
 
-	TArray<FResult> Results = {};
+	TArray<FGameTestResult> Results = {};
 
 	void RunSample();
 	
