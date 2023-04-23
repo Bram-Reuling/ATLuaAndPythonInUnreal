@@ -125,7 +125,7 @@ void ATestManager::CalculateAverage()
 	const float AverageMemoryResult = TotalMemory / CurrentTestMemoryResults.Num();
 	//const float AverageFPSResult = TotalFPS / Actions;
 
-	CreateResult(AverageTimerResult, AverageMemoryResult, 0);
+	CreateResult(AverageTimerResult / 1000, AverageMemoryResult, 0);
 }
 
 void ATestManager::DisplayResults()
