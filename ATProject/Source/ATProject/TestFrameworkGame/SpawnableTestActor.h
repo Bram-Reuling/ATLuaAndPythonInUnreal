@@ -30,7 +30,7 @@ protected:
 	FString TestDescriptor = "Base";
 
 	UPROPERTY(EditAnywhere, meta=(AllowPrivateAccess="true"))
-	int AmountOfActions = 100;
+	int AmountOfActions = 10000;
 
 	int CurrentAmountOfActions = 0;
 
